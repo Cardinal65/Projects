@@ -16,38 +16,52 @@ public class GPA_Calculator {
     public static final double F = 0;
     private static String[] classes;
     private static int[] credits;
-    private static String[] grades;
+    private static double[] grades;
 
     public static void initiateClasses(int numClasses) {
         Scanner in = new Scanner(System.in);
         classes = new String[numClasses];
-        grades = new String[numClasses];
+        grades = new double[numClasses];
         credits = new int[numClasses];
         for (int i = 0; i < classes.length; i++) {
             System.out.printf("What is class %d? ", i+1);
             classes[i] = in.nextLine();
-            System.out.print("Credits? ");
+            System.out.printf("Credits? ");
             credits[i] = in.nextInt();
-
+            String overflow = in.nextLine();
         }
         for (int i = 0; i < grades.length; i++) {
-            System.out.printf("What is your current letter grade for %s? ", classes[i]);
-            grades[i] = in.next();
-        }
-        for (int i = 0; i < grades.length; i++) {
-            Scanner letter = new Scanner(grades[i]);
-            letter.useDelimiter(",");
+            System.out.printf("What is your current grade for %s? ", classes[i]);
+            grades[i] = in.nextDouble();
         }
     }
 
-    public static double calculateGPA() {
+    private static void printGradeChart() {
+      System.out.printf("A+ = %.2f\n", AP);
+      System.out.printf("A  = %.2f\n", A);
+      System.out.printf("A- = %.2f\n", AM);
+      System.out.printf("B+ = %.2f\n", BP);
+      System.out.printf("B  = %.2f\n", B);
+      System.out.printf("B- = %.2f\n", BM);
+      System.out.printf("C+ = %.2f\n", CP);
+      System.out.printf("C  = %.2f\n", C);
+      System.out.printf("C- = %.2f\n", CM);
+      System.out.printf("D+ = %.2f\n", DP);
+      System.out.printf("D  = %.2f\n", D);
+      System.out.printf("D- = %.2f\n", DM);
+      System.out.printf("F  = %.2f\n", F);
+    }
+
+    private static double calculateGPA() {
         double gpa = -1;
         int totalCredits = 0;
         double totalPoints = 0;
         for (int i = 0; i < classes.length; i++) {
             totalCredits += credits[i];
-            totalPoints += grades[i]/credits[i];
+            totalPoints += grades[i]*credits[i];
         }
+
+        gpa = totalPoints/totalCredits;
         //returns -1 if an error occured
         return gpa;
     }
@@ -56,6 +70,8 @@ public class GPA_Calculator {
         Scanner in = new Scanner(System.in);
         System.out.println("How many classes are you taking? ");
         int x = in.nextInt();
+        printGradeChart();
         initiateClasses(x);
+        System.out.printf("Your current GPA is %.2f", calculateGPA());
     }
 }
